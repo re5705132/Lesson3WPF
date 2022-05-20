@@ -3,24 +3,54 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BindingExample"
+        xmlns:local="clr-namespace:BindingExample" 
+        xmlns:converters="clr-namespace:BindingExample.Converters"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid HorizontalAlignment="Right" Width="792">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Window.Resources>
+        <converters:UseToHeightConverter x:Key="UseToHeightConverter"></converters:UseToHeightConverter>
+        <converters:SumToColorConverter x:Key="SumToColorConverter"></converters:SumToColorConverter>
+        <converters:ToColorMultiBinding x:Key="ToColorMultiBinding"></converters:ToColorMultiBinding>
+    </Window.Resources>
+    <StackPanel  >
+        <StackPanel Orientation="Horizontal">
+        <Rectangle Margin="20,0" Width="50" Height="{Binding 
+            ElementName=monthes12, 
+            Path=Text,
+            Converter={StaticResource UseToHeightConverter},
+            UpdateSourceTrigger=LostFocus}" Fill="{Binding ElementName=monthes12, Path=Text, Converter={StaticResource SumToColorConverter}, ConverterParameter=1}"></Rectangle>
+            <Rectangle Width="50" Height="{Binding 
+            ElementName=monthes12, 
+            Path=Text,
+            Converter={StaticResource UseToHeightConverter},
+            UpdateSourceTrigger=LostFocus}" 
+                       Fill="{Binding 
+                                ElementName=monthes12, 
+                                Path=Text, 
+                                Converter={StaticResource SumToColorConverter}, 
+                                ConverterParameter=2}"></Rectangle>
 
-    </Grid>
+            <Rectangle Margin="20,0" Width="50" Height="{Binding 
+            ElementName=monthes56, 
+            Path=Text,
+            Converter={StaticResource UseToHeightConverter},
+            UpdateSourceTrigger=LostFocus}" >
+                <Rectangle.Fill>
+                    <MultiBinding Converter="{StaticResource ToColorMultiBinding}" ConverterParameter="2">
+                        <Binding ElementName="monthes12" Path="Text"></Binding>
+
+                        <Binding ElementName="txtPeopleNum" Path="Text"></Binding>
+                    </MultiBinding>
+                </Rectangle.Fill>
+            </Rectangle>
+
+        </StackPanel>
+        <TextBox x:Name="monthes12">1000</TextBox>
+        <TextBox x:Name="monthes34" Text="{Binding 
+            ElementName=monthes12, 
+            Path=Text,
+            UpdateSourceTrigger=LostFocus}"></TextBox>
+        <TextBlock>מספר הנפשות</TextBlock>
+        <TextBox x:Name="txtPeopleNum">10</TextBox>
+    </StackPanel>
 </Window>

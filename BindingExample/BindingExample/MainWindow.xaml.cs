@@ -23,6 +23,15 @@ namespace BindingExample
         public MainWindow()
         {
             InitializeComponent();
+            BPerson bp = new  BPerson();
+            if(bp is AStudent)
+                ((AStudent)bp).MyFun();
+            var q = bp as AStudent;
+            if(q!=null)
+                ((AStudent)bp).MyFun();
+            object o1 = new AStudent();
+            o1.Equals(new AStudent());
+            // AStudent a = new BPerson();
         }
     }
 }
